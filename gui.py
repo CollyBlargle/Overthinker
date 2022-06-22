@@ -1,39 +1,78 @@
+# import PySimpleGUI as sg
+# import overthinker
+
+
+
+# sg.theme('DarkGreen5')
+# fileName = sg.popup_get_file('Choose file:')
+# result = overthinker.main(fileName)
+# if not result == "Invalid file." and not result == "Improperly formatted chat log.":
+#     # layout = [ [result["textFirst"]],
+#     #            [result["textLast"]],
+#     #            [result["responseTimes"]],
+#     #            [sg.Text('_'  * 100, size=(65, 1))],
+#     #            [result["charactersPerBlock"]],
+#     #            [result["totalCharacters"]]
+#     #          ]
+#     # window = sg.Window('Results', layout)
+#     info = []
+#     chatters = list(result["textFirst"].keys())
+#     heading = ["Statistics"] + chatters
+#     for statistic in result:
+#         newStat = [statistic]
+#         for chatter in chatters:
+#             newStat.append(result[statistic][chatter])
+#         info.append(newStat)
+    
+#     layout = [[sg.Table(values=info, headings=heading, alternating_row_color='#77A16B')]]
+#     window = sg.Window("Result", layout)
+#     while True:
+#         event, values = window.read()
+#         if event == sg.WIN_CLOSED:
+#             break
+    
+# #Maybe the program crashes if any of the statistics don't have a value.
+# #So particularly lonely people might have the program crash on them
+# else:
+#     sg.popup('Error', result)
+
+
+
+
+
 import PySimpleGUI as sg
 import overthinker
 
-fileName = sg.popup_get_file('Choose file:')
-result = overthinker.main(fileName)
-if not result == "Invalid file." and not result == "Improperly formatted chat log.":
-    sg.popup('Results', result["textFirst"],
-            result["textLast"],
-            result["responseTimes"],
-            sg.Text('_'  * 100, size=(65, 1)),
-            result["charactersPerBlock"],
-            result["totalCharacters"])
-else:
-    sg.popup('Error', result)
+sg.theme("DarkGreen5")  # please make your windows colorful
 
-# sg.popup('Results', 'The value returned from popup_get_file', text)
-# sg.theme('DarkAmber')   # Add a touch of color
-# # All the stuff inside your window.
-# layout = [  [sg.Text('Choose file:'), sg.FileBrowse()],
-#             [sg.Button('Run')]
-#          ]
+layout = [[sg.Text('Choose JSON Chat Log File')],
+          [sg.Input(), sg.FileBrowse(file_types=(("JSON Files", ".json"),))],
+          [sg.OK()]
+         ]
 
-# # Create the Window
-# window = sg.Window('Window Title', layout)
-# event, values = window.read()
-# # Event Loop to process "events" and get the "values" of the inputs
-# while True:
-#     event, values = window.read()
-#     if event == sg.WIN_CLOSED: # if user closes window
-#         break
-#     if event == 'Run':
-#         result = overthinker.main(values['Browse'])
-#         sg.popup('Results', result["textFirst"],
-#         result["textLast"],
-#         result["responseTimes"],
-#         result["charactersPerBlock"],
-#         result["totalCharacters"])
+window = sg.Window('Overthinker', layout)
+event, values = window.read()
 
-# window.close()
+if event == "OK":
+    result = overthinker.main(values[0])
+    if not result == "Invalid file." and not result == "Improperly formatted chat log.":
+        info = []
+        chatters = list(result["textFirst"].keys())
+        heading = ["Statistics"] + chatters
+        for statistic in result:
+            newStat = [statistic]
+            for chatter in chatters:
+                newStat.append(result[statistic][chatter])
+            info.append(newStat)
+        
+        layout = [[sg.Table(values=info, headings=heading, alternating_row_color='#77A16B')]]
+        window = sg.Window("Result", layout)
+        while True:
+            event, values = window.read()
+            if event == sg.WIN_CLOSED:
+                break
+        
+    #Maybe the program crashes if any of the statistics don't have a value.
+    #So particularly lonely people might have the program crash on them
+    else:
+        sg.popup('Error', result)
