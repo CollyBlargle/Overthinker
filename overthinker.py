@@ -14,16 +14,20 @@ from statistics import mean
 # Who usually is the conversation ender?
 
 def main(filePath):
-    result = {}
-
-    with open(filePath, encoding= "utf8") as f:
-        chatLog = json.load(f)
+    #Validity checks
+    try:
+        with open(filePath, encoding= "utf8") as f:
+            chatLog = json.load(f)
+    except:
+        return "Invalid file."
 
     # A "text block" is defined as a group of conseccutive messages sent by a single author.
     # A "conversation" is defined as a group of conseccutive blocks in which each block's messages 
     # has a response time less than conversationTimeThreshold. 
 
     # Convert messages to blocks
+
+    result = {}
 
     blocks = []
     conversations = [[]]
@@ -37,17 +41,20 @@ def main(filePath):
     charactersPerBlock = {}
     totalCharacters = {}
 
-    for message in chatLog["messages"]:
-        currentMessageAuthor = message["author"]["id"]
-        
-        if not previousMessageTimestamp is None:
-            responseTime = parser.parse(message["timestamp"]) - previousMessageTimestamp
-        if currentMessageAuthor == previousMessageAuthor and responseTime < conversationTimeThreshold:
-            blocks[len(blocks) - 1].append(message)
-        else:
-            blocks.append([message])
-        previousMessageAuthor = currentMessageAuthor
-        previousMessageTimestamp = parser.parse(message["timestamp"])
+    try:
+        for message in chatLog["messages"]:
+            currentMessageAuthor = message["author"]["id"]
+            
+            if not previousMessageTimestamp is None:
+                responseTime = parser.parse(message["timestamp"]) - previousMessageTimestamp
+            if currentMessageAuthor == previousMessageAuthor and responseTime < conversationTimeThreshold:
+                blocks[len(blocks) - 1].append(message)
+            else:
+                blocks.append([message])
+            previousMessageAuthor = currentMessageAuthor
+            previousMessageTimestamp = parser.parse(message["timestamp"])
+    except KeyError:
+        return "Improperly formatted chat log."
 
     lastMessagePreviousBlock = None
     firstMessageCurrentBlock = None
