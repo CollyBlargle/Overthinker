@@ -7,13 +7,13 @@ from statistics import mean
 
 # Questions I want answered:
 # Who usually texts first?
+# Who usually is the conversation ender?
 # Average response time?
 # Average amount of characters per message?
 # Total characters per block?
 # Total amount of characters sent?
-# Who usually is the conversation ender?
 
-def main(filePath):
+def main(filePath, timeInput = 8):
     #Validity checks
     try:
         with open(filePath, encoding= "utf8") as f:
@@ -21,8 +21,8 @@ def main(filePath):
     except:
         return "Invalid file."
 
-    # A "text block" is defined as a group of conseccutive messages sent by a single author.
-    # A "conversation" is defined as a group of conseccutive blocks in which each block's messages 
+    # A "text block" is defined as a group of consecutive messages sent by a single author.
+    # A "conversation" is defined as a group of consecutive blocks in which each block's messages 
     # has a response time less than conversationTimeThreshold. 
 
     # Convert messages to blocks
@@ -31,8 +31,16 @@ def main(filePath):
 
     blocks = []
     conversations = [[]]
-    conversationTimeThreshold = delta = timedelta(hours=8)
-
+    
+    try:
+        conversationTimeThreshold = delta = timedelta(hours=int(timeInput))
+    except ValueError:
+        return "Invalid hours (Are you sure you inputted an integer amount?)."
+    except OverflowError:
+        return "Too many hours."
+    if int(timeInput) < 0:
+        return "Did you input negative hours?"
+    
     previousMessageTimestamp = None
     currentMessageAuthor = None
     previousMessageAuthor = None
@@ -98,7 +106,7 @@ def main(filePath):
         lastMessagePreviousBlock = block[len(block) - 1]
     
     for chatter in responseTimes:
-        responseTimes[chatter] = round(mean(responseTimes[chatter]), 1)
+        responseTimes[chatter] = str(datetime.timedelta(seconds=round(mean(responseTimes[chatter]), 1))).split(".")[0]
     
     for chatter in charactersPerBlock:
         charactersPerBlock[chatter] = round(mean(charactersPerBlock[chatter]), 1)
@@ -118,12 +126,14 @@ def main(filePath):
     result["charactersPerBlock"] = charactersPerBlock
     result["totalCharacters"] = totalCharacters
 
-    print(result["textFirst"],
-        result["textLast"],
-        result["responseTimes"],
-        result["charactersPerBlock"],
-        result["totalCharacters"])
+    # print(result["textFirst"],
+    #     result["textLast"],
+    #     result["responseTimes"],
+    #     result["charactersPerBlock"],
+    #     result["totalCharacters"])
     return result
+
+#defaultdict is probably better than constantly checking if a key exists..
 
 if __name__ == "__main__":
     main()
