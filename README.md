@@ -21,10 +21,10 @@ This program is incredibly inefficient. It churns through 10000 messages in abou
 
 Perhaps an implementation with .csv files could be good since the filetype was designed for stuff like this I believe.. I'm rather unfamiliar with R and other data-science languages though..
 
-This was my first GUI. I was hoping to get a modal window for the result window, but I decided I didn't care.
+This was my first GUI. I was hoping to get a modal window for the result window, and working icons but I decided I didn't care.
 
 I'm not sure if the numbers are completely accurate. I wasn't very diligent with my test-cases. I really only wrote this program for myself, but maybe others may find it useful.
 
-Some other statistics I might want implemented are the amount of memes sent by each chatter, and removing those characters from the total
+Some other statistics I might want implemented are the amount of memes sent by each chatter, and removing those characters from the total character count.
 
 I struggle a lot with overthinking. I thought this program would help. I'd get concrete numbers on statistics I constantly speculated about. But now that I have the numbers, I realize their invalidity. If I want to know how my friend feels about me, I should just ask. We're friends, after all!
