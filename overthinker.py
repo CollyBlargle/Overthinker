@@ -120,17 +120,12 @@ def main(filePath, timeInput = 8):
     textFirst = dict(Counter(textFirst))
     textLast = dict(Counter(textLast))
 
-    result["textFirst"] = textFirst
-    result["textLast"] = textLast
-    result["responseTimes"] = responseTimes
-    result["charactersPerBlock"] = charactersPerBlock
-    result["totalCharacters"] = totalCharacters
+    result["Times chatter texted first"] = textFirst
+    result["Times chatter texted last"] = textLast
+    result["Average response time"] = responseTimes
+    result["Average characters per block"] = charactersPerBlock
+    result["Total amount of characters"] = totalCharacters
 
-    # print(result["textFirst"],
-    #     result["textLast"],
-    #     result["responseTimes"],
-    #     result["charactersPerBlock"],
-    #     result["totalCharacters"])
     return result
 
 #defaultdict is probably better than constantly checking if a key exists..
