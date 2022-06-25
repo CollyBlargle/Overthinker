@@ -48,6 +48,7 @@ def main(filePath, timeInput = 8):
     responseTimes = {}
     charactersPerBlock = {}
     totalCharacters = {}
+    totalEdits = {}
 
     try:
         for message in chatLog["messages"]:
@@ -74,9 +75,15 @@ def main(filePath, timeInput = 8):
         firstMessageCurrentBlock = block[0]
 
         # Get characters of message
+        # Get amount of edits
         charactersInBlock = 0
         for message in block:
             charactersInBlock += len(message["content"])
+            if not message["timestampEdited"] == None:
+                if not message["author"]["name"] in totalEdits:      
+                    totalEdits[message["author"]["name"]] = 1
+                else:
+                    totalEdits[message["author"]["name"]] += 1
         
         if not message["author"]["name"] in totalCharacters:
             totalCharacters[message["author"]["name"]] = charactersInBlock
@@ -125,7 +132,7 @@ def main(filePath, timeInput = 8):
     result["Average response time"] = responseTimes
     result["Average characters per block"] = charactersPerBlock
     result["Total amount of characters"] = totalCharacters
-
+    result["Total edits"] = totalEdits
     return result
 
 #defaultdict is probably better than constantly checking if a key exists..

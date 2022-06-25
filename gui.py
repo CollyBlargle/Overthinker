@@ -1,5 +1,7 @@
 import PySimpleGUI as sg
 import overthinker
+import sys
+import os
 
 myIcon = 'icon.ico'
 sg.theme("DarkGreen5")
@@ -33,6 +35,6 @@ if event == "OK":
                 break
         
     #Maybe the program crashes if any of the statistics don't have a value.
-    #So particularly lonely people might have the program crash on them
+    #So particularly lonely people might have the program crash on them.
     else:
         sg.popup('Error', result)
