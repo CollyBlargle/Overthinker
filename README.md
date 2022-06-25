@@ -17,7 +17,7 @@
  
  Total amount of characters: The total amount of characters sent by each chatter.
  
- Total edits: The total amount of messages that were edited by each chatter
+ Total edits: The total amount of messages that were edited by each chatter.
 
 # Notes
 This program is incredibly inefficient. It churns through 10000 messages in about 5 seconds for my lower-end computer. It iterates through the messages to create the blocks, and then to create the conversations from the blocks, and finally parses through the conversations to generate the results. I feel like this could be done in one iteration given some cleverness. I tried this method, but it became rather unwieldy and unreadable.
